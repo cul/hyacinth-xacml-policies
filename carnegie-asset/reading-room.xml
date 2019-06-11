@@ -1,0 +1,27 @@
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        PolicyId="policy:89dcca6c-87b3-46d5-a1fd-1264ae7488c2"
+        RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit"> 
+  <Description>Sample policy for Carnegie content restricted to reading room</Description>
+  <Target>
+    <AnyOf>
+      <AllOf>
+        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
+          <AttributeDesignator MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+                               AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </Match>
+      </AllOf>
+    </AnyOf>
+  </Target>
+  <Rule RuleId="1" Effect="Permit">
+    <!-- Each restriction_on_access field group results in a Rule element defining a permit condition -->
+    <Description>On-site Access</Description>
+    <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:anyURI-at-least-one-member-of"> 
+          <AttributeDesignator MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment" AttributeId="urn:library.columbia.edu:names:reading-room-location" DataType="http://www.w3.org/2001/XMLSchema#anyURI"/>
+          <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:anyURI-bag">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#anyURI" FriendlyName="Reading Room, Rare Book &amp; Manuscript Library, Columbia University">http://id.library.columbia.edu/term/45487bbd-97ef-44b4-9468-dda47594bc60</AttributeValue>
+          </Apply>
+    </Condition>
+  </Rule>
+</Policy>

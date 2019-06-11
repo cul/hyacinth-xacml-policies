@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        PolicyId="policy:89dcca6c-87b3-46d5-a1fd-1264ae7488c2"
+        RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit"> 
+  <Description>Sample policy for Academic Commons content embargoed until date</Description>
+  <Target>
+    <AnyOf>
+      <AllOf>
+        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">GET</AttributeValue>
+          <AttributeDesignator MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+                               AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        </Match>
+      </AllOf>
+    </AnyOf>
+  </Target>
+  <Rule RuleId="1" Effect="Permit">
+    <!-- Each restriction_on_access field group results in a Rule element defining a permit condition -->
+    <Description>Embargoed</Description> 
+    <Condition FunctionId="urn:oasis:names:tc:xacml:1.0:function:date-greater-than-or-equal">
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:date-one-and-only">
+        <AttributeDesignator MustBePresent="false" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment"
+                           AttributeId="urn:oasis:names:tc:xacml:1.0:environment:current-date" DataType="http://www.w3.org/2001/XMLSchema#date"/>
+      </Apply>
+      <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#date">2099-01-01</AttributeValue>
+    </Condition>
+  </Rule>
+</Policy>
